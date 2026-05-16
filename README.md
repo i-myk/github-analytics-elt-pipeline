@@ -9,7 +9,7 @@ The project collects GitHub repository and commit activity data, transforms it u
 
 ## Architecture
 
-GitHub API → Fivetran → BigQuery → dbt → Looker Studio
+GitHub API -> Fivetran -> BigQuery -> dbt -> Looker Studio
 
 ---
 
