@@ -103,3 +103,33 @@ The pipeline ingests GitHub repository and commit activity data, transforms raw 
 - Data warehouse concepts
 
 ---
+
+
+## Data Quality Tests
+
+This project uses dbt schema tests to improve data quality and validate important business fields.
+
+Implemented tests include:
+
+- `unique` → validates no duplicate primary keys
+- `not_null` → ensures important fields are not empty
+
+Example validations:
+
+- `repository_id` must be unique and not null
+- `user_id` must be unique and not null
+- `stat_date` cannot be null
+
+Example dbt test configuration:
+
+```yaml
+tests:
+  - unique
+  - not_null
+```
+
+Run tests with:
+
+```bash
+dbt test
+```
