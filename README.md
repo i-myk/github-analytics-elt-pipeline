@@ -67,11 +67,11 @@ The pipeline ingests GitHub repository and commit activity data, transforms raw 
 
 ## Repository Activity Lineage
 
-![Lineage](docs/fct_repo_activity_daily.sql.png)
+![Lineage](docs/fct_repo_activity_daily.png)
 
 ## Commit Activity Lineage
 
-![Lineage](docs/fct_github_commit_activity.sql.png)
+![Lineage](docs/fct_github_commit_activity.png)
 
 ---
 
@@ -84,6 +84,9 @@ The pipeline ingests GitHub repository and commit activity data, transforms raw 
 ## Dashboard Example 2
 
 ![Dashboard](dashboards/studio_looker_dashboard_2.png)
+## Dashboard Example 3
+
+![Dashboard](dashboards/studio_looker_dashboard_3.png)
 
 ---
 
@@ -100,10 +103,3 @@ The pipeline ingests GitHub repository and commit activity data, transforms raw 
 - Data warehouse concepts
 
 ---
-
-# Future Improvements
-
-- Add automated dbt tests
-- Add CI/CD workflow with GitHub Actions
-- Add incremental dbt models
-- Add Airflow orchestration
