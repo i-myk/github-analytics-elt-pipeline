@@ -1,89 +1,109 @@
 # GitHub Analytics ELT Pipeline
 
-## Project Overview
-End-to-end GitHub analytics project built using modern data stack tools including Fivetran, BigQuery, dbt, and Looker Studio.
-
-The project collects GitHub repository and commit activity data, transforms it using dbt, and visualizes KPIs in interactive dashboards.
+End-to-end analytics engineering project built using GitHub data, Fivetran, BigQuery, dbt, and Looker Studio.
 
 ---
 
-## Architecture
+# Project Overview
 
-GitHub API -> Fivetran -> BigQuery -> dbt -> Looker Studio
+This project demonstrates a modern ELT analytics workflow:
+
+GitHub API/Data → Fivetran → BigQuery → dbt → Looker Studio
+
+The pipeline ingests GitHub repository and commit activity data, transforms raw data into analytics-ready models using dbt, and visualizes KPIs in Looker Studio dashboards.
 
 ---
 
-## Tech Stack
+# Tech Stack
 
-- GitHub API
-- Fivetran
-- Google BigQuery
+- BigQuery
 - dbt
-- Looker Studio
+- Fivetran
 - SQL
+- Looker Studio
 - GitHub
 
 ---
 
-## Data Pipeline
+# Data Pipeline Architecture
 
-### Ingestion
-GitHub data was ingested into BigQuery using Fivetran connectors.
-
-### Transformation
-dbt was used to create:
-- staging models
-- dimension tables
-- fact tables
-- rolling 7-day activity metrics
-
-### Visualization
-Looker Studio dashboards were built to monitor:
-- repository activity
-- commit trends
-- active contributors
-- daily GitHub activity
+1. Fivetran ingests GitHub data into BigQuery
+2. dbt staging models clean and standardize raw data
+3. dbt marts create analytics-ready fact and dimension tables
+4. Looker Studio dashboards visualize repository activity and commit trends
 
 ---
 
-## dbt Models
+# dbt Models
 
-### Staging Models
+## Staging Models
+
 - stg_github__commit
 - stg_github__repositories
 - stg_github__user
 
-### Mart Models
-- dim_github__repositories
-- dim_github__user
+## Mart Models
+
 - fct_github_commit_activity
 - fct_github_commit_activity_7d
-- fct_daily_repo_stats
 - fct_repo_activity_daily
+- fct_daily_repo_stats
+- dim_github__repositories
+- dim_github__user
 
 ---
 
-## Dashboard KPIs
+# Dashboard KPIs
 
 - Total commits
 - Active contributors
 - Repository activity
 - Daily commit trends
-- Rolling 7-day activity
-- Repository engagement metrics
+- 7-day moving average activity
 
 ---
 
-## Key Learnings
+# dbt Lineage
 
-- Built an end-to-end ELT pipeline
-- Implemented dimensional modeling in dbt
-- Worked with cloud data warehouse architecture
-- Created reusable SQL transformations
-- Developed BI dashboards for analytics reporting
+## Repository Activity Lineage
+
+![Lineage](docs/fct_repo_activity_daily.sql.png)
+
+## Commit Activity Lineage
+
+![Lineage](docs/fct_github_commit_activity.sql.png)
 
 ---
 
-## Dashboard Screenshots
+# Dashboard Screenshots
 
-See `/dashboards` folder for dashboard previews.
+## Dashboard Example 1
+
+![Dashboard](dashboards/studio_looker_dashboard_1.png)
+
+## Dashboard Example 2
+
+![Dashboard](dashboards/studio_looker_dashboard_2.png)
+
+---
+
+# Key Skills Demonstrated
+
+- ELT pipeline development
+- Data modeling
+- SQL transformations
+- dbt development
+- BigQuery analytics
+- Dashboard development
+- Analytics engineering
+- KPI reporting
+- Data warehouse concepts
+
+---
+
+# Future Improvements
+
+- Add automated dbt tests
+- Add CI/CD workflow with GitHub Actions
+- Add incremental dbt models
+- Add Airflow orchestration
