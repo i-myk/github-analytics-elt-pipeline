@@ -105,14 +105,99 @@ Fivetran automatically detects new and updated records in GitHub and synchronize
 
 ### Sync Monitoring
 
-### Sync Monitoring
-
 The connector runs automatically every 6 hours and provides monitoring for data extraction and loading operations. This schedule offers near real-time visibility into repository activity while minimizing unnecessary API requests and processing costs.
 
 Depending on business requirements, data volume, and API usage limits, the sync frequency can be adjusted from 15 minutes to 24 hours.
   
 
 ![Fivetran Sync Status](docs/fivetran_sync_status.png)
+
+## ## Step 3: BigQuery Data Warehouse
+
+BigQuery serves as the central data warehouse for this project. After connecting GitHub to Fivetran, all repository data is automatically loaded into BigQuery, where it is stored and prepared for transformation and analytics.
+
+The project contains the following datasets:
+
+| Dataset                   | Purpose                                                                         |
+
+| ------------------------- | ------------------------------------------------------------------------------- |
+
+| github_data               | Raw GitHub data loaded directly from the GitHub API through Fivetran.           |
+
+| github_data_github_source | Intermediate transformation layer used by Fivetran Transformations.             |
+
+| github_data_github        | Analytics-ready dataset containing transformed and aggregated reporting tables. |
+
+### BigQuery Datasets
+
+The project uses three datasets that represent different stages of the data pipeline.
+
+#### 1. github_data (Raw Data Layer)
+
+This dataset contains raw GitHub data loaded directly from Fivetran.
+
+Examples of tables include:
+
+* commit
+* repository
+* user
+* issue
+* pull_request
+* repo_collaborator
+* branch_commit_relation
+
+These tables preserve the original structure of the GitHub source data and serve as the foundation for downstream transformations.
+
+ ![BigQuery Raw Dataset](docs/bigquery_raw_dataset.png)
+
+  
+
+---
+
+#### 2. github_data_github_source (Staging Layer)
+
+This dataset contains staging tables used for intermediate transformations.
+
+Examples of tables include:
+
+* stg_github_issue
+* stg_github_issue_comment
+* stg_github_issue_closed_history
+* stg_github_issue_merged
+* stg_github_pull_request
+* stg_github_pull_request_review
+
+This layer standardizes, cleans, and prepares raw GitHub data before it is aggregated into reporting models.
+
+ ![BigQuery Raw Dataset](docs/bigquery_staging_dataset.png)  
+
+---
+
+#### 3. github_data_github (Analytics Layer)
+
+This dataset contains analytics-ready tables designed for reporting and dashboarding.
+
+Examples of tables include:
+
+* github_daily_metrics
+* github_weekly_metrics
+* github_monthly_metrics
+* github_quarterly_metrics
+* github_issues
+* github_pull_requests
+
+These tables provide summarized metrics that help track repository activity, contributor engagement, issue management, and engineering productivity.
+
+ ![BigQuery Raw Dataset](docs/bigquery_analytics_dataset.png)  
+
+### Data Flow
+
+GitHub API → Fivetran → BigQuery (Raw Layer) → BigQuery (Staging Layer) → BigQuery (Analytics Layer) → dbt → Looker Studio
+
+This layered architecture follows analytics engineering best practices by separating raw, staging, and analytics datasets, making the pipeline easier to maintain, test, and scale.
+
+ ![BigQuery Raw Dataset](docs/bigquery_analytics_dataset  .png)  
+
 
 ---
 
