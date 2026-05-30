@@ -162,7 +162,7 @@ These tables preserve the original structure of the GitHub source data and serve
 
 ---
 
-#### 2. github_data_github_source (Staging Layer)
+#### 2. github_data_github (Staging Layer)
 
 This dataset contains staging tables used for intermediate transformations.
 
@@ -181,7 +181,7 @@ This layer standardizes, cleans, and prepares raw GitHub data before it is aggre
 
 ---
 
-#### 3. github_data_github (Analytics Layer)
+#### 3. github_data_github_source (Analytics Layer)
 
 This dataset contains analytics-ready tables designed for reporting and dashboarding.
 
