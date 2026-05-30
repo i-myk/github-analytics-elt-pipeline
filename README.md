@@ -213,7 +213,7 @@ GitHub Raw Tables → Staging Models → Dimension Models → Fact Models → An
 
 ### Transformation Flow
 
-![dbt Transformation Flow](docs/dbt_transformation_flow.png)
+![dbt Transformation Flow](docs/dbt_transformation.png)
 
 ### dbt Project Structure
 
@@ -372,6 +372,91 @@ dbt was used because it supports:
 
 This dbt layer transforms raw GitHub activity data into reliable datasets that can be used for KPI reporting and dashboard development in Looker Studio.
 
+# Step 5: Looker Studio Dashboard
+
+After the data was transformed using dbt, the analytics-ready tables were connected to Looker Studio to create interactive dashboards for repository performance monitoring and GitHub activity analysis.
+
+## Dashboard Architecture
+
+GitHub API → Fivetran → BigQuery → dbt → Looker Studio
+
+![Dashboard Architecture](docs/looker_architecture.png)
+
+## Dashboard Overview
+
+The dashboard provides visibility into repository performance, commit activity, and contributor engagement.
+
+### Key Metrics
+
+- Total Commits
+- Active Contributors
+- Number of Repositories
+- Daily Commit Activity
+- Repository Activity Trends
+- 7-Day Commit Activity
+- Top Active Repositories
+
+## Dashboard Features
+
+### Executive KPI Cards
+
+The dashboard includes high-level KPI cards for quick monitoring:
+
+- Total Commits
+- Active Users
+- Active Repositories
+- Recent Activity
+
+### Trend Analysis
+
+Time-series visualizations help identify:
+
+- Daily commit patterns
+- Weekly activity trends
+- Repository growth
+- Contributor engagement
+
+### Repository Performance
+
+Repository-level analysis includes:
+
+- Repository activity rankings
+- Commit volume by repository
+- Activity trends over time
+
+## Dashboard Screenshots
+
+### Main Dashboard
+
+![Main Dashboard](docs/dashboard_overview.png)
+
+### Repository Activity Analysis
+
+![Repository Analysis](docs/dashboard_repository_analysis.png)
+
+### Commit Activity Trends
+
+![Commit Trends](docs/dashboard_commit_trends.png)
+
+## Data Source
+
+The dashboard connects directly to analytics-ready tables created by dbt:
+
+- fct_github_commit_activity
+- fct_github_commit_activity_7d
+- fct_daily_repo_stats
+- dim_github_repositories
+- dim_github_user
+
+## Business Value
+
+The dashboard enables:
+
+- Repository performance monitoring
+- Contributor activity tracking
+- Engineering productivity analysis
+- Historical trend analysis
+- Self-service reporting
 
 ---
 
