@@ -6,11 +6,27 @@ End-to-end analytics engineering project built using GitHub data, Fivetran, BigQ
 
 # Project Overview
 
+# Project Overview
+
 This project demonstrates a modern ELT analytics workflow:
 
 GitHub API/Data -> Fivetran -> BigQuery -> dbt -> Looker Studio
 
 The pipeline ingests GitHub repository and commit activity data, transforms raw data into analytics-ready models using dbt, and visualizes KPIs in Looker Studio dashboards.
+
+## Architecture Diagram
+
+![GitHub Analytics Architecture](docs/architecture_diagram.png)
+
+## Data Pipeline Architecture
+
+The project follows a modern ELT architecture:
+
+1. GitHub serves as the source system containing repository, commit, and user activity data.
+2. Fivetran automatically extracts data from GitHub and loads it into BigQuery on a scheduled basis.
+3. BigQuery stores the raw source data and acts as the central data warehouse.
+4. dbt transforms raw data into clean, analytics-ready models using a layered architecture.
+5. Looker Studio connects to the transformed models and provides business reporting dashboards.
 
 ---
 
