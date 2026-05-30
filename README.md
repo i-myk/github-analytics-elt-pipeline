@@ -66,10 +66,6 @@ The goal of this project is to transform raw GitHub activity data into analytics
 
 GitHub contains rich operational data that is well suited for demonstrating modern analytics engineering workflows. It provides a realistic dataset for building an end-to-end ELT pipeline and showcasing data ingestion, transformation, testing, and reporting processes.
 
-### Source Architecture
-
-GitHub API/Data → Fivetran → BigQuery → dbt → Looker Studio
-
 ### GitHub Source Schema
 
 The GitHub connector synchronizes multiple source tables, including:
@@ -88,7 +84,35 @@ These tables provide the raw data required for building analytics-ready models a
 
 ![GitHub Source](docs/github_source.png)
 
+## Step 2: Data Ingestion with Fivetran
 
+I used Fivetran to automate data ingestion from GitHub into BigQuery.
+
+The GitHub connector extracts repository, commit, contributor, and user activity data and loads it into BigQuery without requiring custom ETL scripts.
+
+### Connector Configuration
+
+- Source: GitHub
+- Destination: BigQuery
+- Status: Active
+- Sync Frequency: Every 6 Hours
+
+Fivetran automatically detects new and updated records in GitHub and synchronizes them with BigQuery, ensuring that the analytics pipeline always uses current data.
+
+### Fivetran Connector
+
+![Fivetran Connector](docs/fivetran_connector.png)
+
+### Sync Monitoring
+
+### Sync Monitoring
+
+The connector runs automatically every 6 hours and provides monitoring for data extraction and loading operations. This schedule offers near real-time visibility into repository activity while minimizing unnecessary API requests and processing costs.
+
+Depending on business requirements, data volume, and API usage limits, the sync frequency can be adjusted from 15 minutes to 24 hours.
+  
+
+![Fivetran Sync Status](docs/fivetran_sync_status.png)
 
 ---
 
