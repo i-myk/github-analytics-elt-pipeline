@@ -204,7 +204,7 @@ GitHub API → Fivetran → BigQuery (Raw Layer) → BigQuery (Staging Layer) �
 
 This layered architecture follows analytics engineering best practices by separating raw, staging, and analytics datasets, making the pipeline easier to maintain, test, and scale.
 
- ![BigQuery Raw Dataset](docs/bigquery_analytics_dataset  .png)  
+ ![BigQuery Raw Dataset](docs/bigquery_analytics_dataset.png)  
 
 
 ---
