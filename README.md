@@ -90,6 +90,7 @@ These tables provide the raw data required for building analytics-ready models a
 
 ![GitHub Source](docs/github_source.png)
 
+
 ## Step 2: Data Ingestion with Fivetran
 
 I used Fivetran to automate data ingestion from GitHub into BigQuery.
@@ -118,21 +119,22 @@ Depending on business requirements, data volume, and API usage limits, the sync 
 
 ![Fivetran Sync Status](docs/fivetran_sync_status.png)
 
-## ## Step 3: BigQuery Data Warehouse
+
+## Step 3: BigQuery Data Warehouse
 
 BigQuery serves as the central data warehouse for this project. After connecting GitHub to Fivetran, all repository data is automatically loaded into BigQuery, where it is stored and prepared for transformation and analytics.
 
-The project contains the following datasets:
+### BigQuery Dataset Architecture
 
-| Dataset                   | Purpose                                                                         |
+![BigQuery Datasets Overview](docs/bigquery_datasets_overview.png)
 
-| ------------------------- | ------------------------------------------------------------------------------- |
+The project contains three BigQuery datasets that support different stages of the analytics pipeline:
 
-| github_data               | Raw GitHub data loaded directly from the GitHub API through Fivetran.           |
-
-| github_data_github_source | Intermediate transformation layer used by Fivetran Transformations.             |
-
-| github_data_github        | Analytics-ready dataset containing transformed and aggregated reporting tables. |
+| Dataset | Purpose |
+|----------|----------|
+| github_data | Raw GitHub data loaded directly from the GitHub API through Fivetran. |
+| github_data_github_source | Intermediate transformation layer used by Fivetran Transformations. |
+| github_data_github | Analytics-ready dataset containing transformed and aggregated reporting tables. |
 
 ### BigQuery Datasets
 
