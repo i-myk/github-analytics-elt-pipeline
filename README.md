@@ -29,6 +29,68 @@ The project follows a modern ELT architecture:
 5. Looker Studio connects to the transformed models and provides business reporting dashboards.
 
 ---
+## Step 1: GitHub API/Data Source
+
+The source data for this project comes from the GitHub API. GitHub provides repository, commit, contributor, and user activity data through its API, making it a valuable source for engineering analytics and repository performance monitoring.
+
+### Data Source
+
+**Source System:** GitHub API
+
+**Documentation:**
+https://docs.github.com/en/rest
+
+### Data Collected
+
+The GitHub API provides information including:
+
+* Repository details
+* Commit activity
+* Contributor information
+* User activity
+* Repository metadata
+* Activity timestamps
+
+In this project, Fivetran extracts GitHub data and loads it into BigQuery, where it becomes the foundation for downstream transformations and reporting.
+
+### Project Objective
+
+The goal of this project is to transform raw GitHub activity data into analytics-ready datasets that can be used to monitor:
+
+* Repository activity
+* Commit trends
+* Contributor engagement
+* Engineering productivity metrics
+
+### Why GitHub Data?
+
+GitHub contains rich operational data that is well suited for demonstrating modern analytics engineering workflows. It provides a realistic dataset for building an end-to-end ELT pipeline and showcasing data ingestion, transformation, testing, and reporting processes.
+
+### Source Architecture
+
+GitHub API/Data → Fivetran → BigQuery → dbt → Looker Studio
+
+### GitHub Source Schema
+
+The GitHub connector synchronizes multiple source tables, including:
+
+* commit
+* branch_commit_relation
+* commit_check_run
+* commit_file
+* commit_parent
+* repository
+* user
+
+These tables provide the raw data required for building analytics-ready models and dashboards.
+
+### GitHub Source
+
+![GitHub Source](docs/github_source.png)
+
+
+
+---
 
 # Tech Stack
 
