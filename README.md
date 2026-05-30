@@ -195,17 +195,13 @@ Examples of tables include:
 * github_pull_requests
 
 These tables provide summarized metrics that help track repository activity, contributor engagement, issue management, and engineering productivity.
+This layered architecture follows analytics engineering best practices by separating raw, staging, and analytics datasets, making the pipeline easier to maintain, test, and scale.
 
  ![BigQuery Raw Dataset](docs/bigquery_analytics_dataset.png)  
 
 ### Data Flow
 
 GitHub API → Fivetran → BigQuery (Raw Layer) → BigQuery (Staging Layer) → BigQuery (Analytics Layer) → dbt → Looker Studio
-
-This layered architecture follows analytics engineering best practices by separating raw, staging, and analytics datasets, making the pipeline easier to maintain, test, and scale.
-
- ![BigQuery Raw Dataset](docs/bigquery_analytics_dataset.png)  
-
 
 ### Step 4: dbt Data Transformation
 
