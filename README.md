@@ -207,6 +207,176 @@ This layered architecture follows analytics engineering best practices by separa
  ![BigQuery Raw Dataset](docs/bigquery_analytics_dataset.png)  
 
 
+### Step 4: dbt Data Transformation
+
+dbt is used to transform raw GitHub data into clean, tested, and analytics-ready models for reporting.
+
+The transformation layer follows a structured modeling approach:
+
+GitHub Raw Tables → Staging Models → Dimension Models → Fact Models → Analytics Dataset
+
+### Transformation Flow
+
+![dbt Transformation Flow](docs/dbt_transformation_flow.png)
+
+### dbt Project Structure
+
+```text
+models/
+└── github_analytics_dbt/
+    ├── staging/
+    │   ├── stg_github__commit.sql
+    │   ├── stg_github__repositories.sql
+    │   └── stg_github__user.sql
+    │
+    └── marts/
+        ├── dim_github__repositories.sql
+        ├── dim_github__user.sql
+        ├── fct_github_commit_activity.sql
+        ├── fct_github_commit_activity_7d.sql
+        ├── fct_repo_activity_daily.sql
+        └── fct_daily_repo_stats.sql
+```
+
+### Source Layer
+
+The source layer references raw GitHub tables loaded into BigQuery by Fivetran.
+
+Main source tables:
+
+- commit
+- repository
+- user
+- issue
+- pull_request
+
+### Staging Layer
+
+Staging models clean and standardize raw GitHub data before it is used in reporting models.
+
+Examples:
+
+- `stg_github__commit`
+- `stg_github__repositories`
+- `stg_github__user`
+
+Key transformations include:
+
+- Renaming columns
+- Standardizing field names
+- Converting data types
+- Filtering unnecessary fields
+- Preparing clean datasets for downstream models
+
+### Dimension Models
+
+Dimension models provide descriptive attributes for analysis.
+
+Examples:
+
+- `dim_github__repositories` — repository attributes and metadata
+- `dim_github__user` — GitHub user and contributor attributes
+
+### Fact Models
+
+Fact models contain measurable events and metrics used for analysis and dashboards.
+
+Examples:
+
+- `fct_github_commit_activity` — commit activity metrics
+- `fct_github_commit_activity_7d` — 7-day commit activity trends
+- `fct_repo_activity_daily` — daily repository activity
+- `fct_daily_repo_stats` — daily repository statistics
+
+### dbt Lineage
+
+The dbt lineage graph shows how raw GitHub source tables flow into staging models and then into analytics-ready fact and dimension tables.
+
+![dbt Lineage](docs/dbt_lineage.png)
+
+### Key dbt Code Examples
+
+#### 1. Source Definition
+This shows how dbt connects to your GitHub raw tables.
+```File: _src_github_staging.yml
+
+version: 2
+
+sources:
+  - name: github_data
+    database: fifth-flash-489402-h9
+    schema: github_data
+    tables:
+      - name: repository
+      - name: commit
+      - name: user
+      - name: issue
+      - name: pull_request
+
+models:
+  - name: stg_github__repositories
+    description: "Cleaned repository data from GitHub"
+    columns:
+      - name: repository_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_github__user
+    description: "Cleaned GitHub user data"
+    columns:
+      - name: user_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_github__commit
+    description: "Cleaned GitHub commit data"
+    columns:
+      - name: commit_sha
+        tests:
+          - unique
+          - not_null
+```          
+
+### Data Quality Tests
+
+dbt tests are used to validate important fields and improve data reliability.
+
+Implemented tests include:
+
+- `unique`
+- `not_null`
+
+Example:
+
+```_marts.yml
+ name: dim_github__user
+    description: "Dimension table for GitHub users"
+    columns:
+      - name: user_id
+        description: "Primary key of user"
+        tests:
+          - unique
+          - not_null
+
+
+```
+
+### Why dbt?
+
+dbt was used because it supports:
+
+- modular SQL transformations
+- version-controlled analytics logic
+- reusable models
+- data quality testing
+- clear lineage and documentation
+- maintainable analytics engineering workflows
+
+This dbt layer transforms raw GitHub activity data into reliable datasets that can be used for KPI reporting and dashboard development in Looker Studio.
+
+
 ---
 
 # Tech Stack
