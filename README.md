@@ -40,6 +40,12 @@ The source data for this project comes from the GitHub API. GitHub provides repo
 **Documentation:**
 https://docs.github.com/en/rest
 
+### GitHub API Data Model
+
+The GitHub API provides several categories of repository and contributor data used throughout the analytics pipeline.
+
+![GitHub API Data Overview](docs/github_api_data_overview.png)
+
 ### Data Collected
 
 The GitHub API provides information including:
