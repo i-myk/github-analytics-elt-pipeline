@@ -122,86 +122,85 @@ Depending on business requirements, data volume, and API usage limits, the sync 
 
 ## Step 3: BigQuery Data Warehouse
 
-BigQuery serves as the central data warehouse for this project. After connecting GitHub to Fivetran, all repository data is automatically loaded into BigQuery, where it is stored and prepared for transformation and analytics.
+Google BigQuery serves as the central data warehouse for this project. GitHub repository data is automatically extracted through Fivetran and loaded into BigQuery, where it is transformed into analytics-ready models using dbt.
 
 ### BigQuery Dataset Architecture
 
-![BigQuery Datasets Overview](docs/bigquery_datasets_overview.png)
-
-The project contains three BigQuery datasets that support different stages of the analytics pipeline:
+The project is organized into three logical layers that follow analytics engineering best practices.
 
 | Dataset | Purpose |
-|----------|----------|
-| github_data | Raw GitHub data loaded directly from the GitHub API through Fivetran. |
-| github_data_github_source | Intermediate transformation layer used by Fivetran Transformations. |
-| github_data_github | Analytics-ready dataset containing transformed and aggregated reporting tables. |
-
-### BigQuery Datasets
-
-The project uses three datasets that represent different stages of the data pipeline.
-
-#### 1. github_data (Raw Data Layer)
-
-This dataset contains raw GitHub data loaded directly from Fivetran.
-
-Examples of tables include:
-
-* commit
-* repository
-* user
-* issue
-* pull_request
-* repo_collaborator
-* branch_commit_relation
-
-These tables preserve the original structure of the GitHub source data and serve as the foundation for downstream transformations.
-
- ![BigQuery Raw Dataset](docs/bigquery_raw_dataset.png)
-
-  
+|----------|---------|
+| **github_data** | Raw GitHub data ingested from the GitHub API via Fivetran. |
+| **dbt staging models** | Cleaned and standardized source data used for downstream transformations. |
+| **dbt marts** | Business-ready fact and dimension models used for reporting and dashboarding. |
 
 ---
 
-#### 2. github_data_github (Staging Layer)
+### 1. Raw Data Layer (`github_data`)
 
-This dataset contains staging tables used for intermediate transformations.
+The raw dataset contains data automatically loaded from GitHub through Fivetran without modification.
 
-Examples of tables include:
+Example source tables include:
 
-* stg_github_issue
-* stg_github_issue_comment
-* stg_github_issue_closed_history
-* stg_github_issue_merged
-* stg_github_pull_request
-* stg_github_pull_request_review
+- commit
+- repository
+- user
+- issue
+- pull_request
+- repo_collaborator
+- branch_commit_relation
 
-This layer standardizes, cleans, and prepares raw GitHub data before it is aggregated into reporting models.
+These tables preserve the original GitHub schema and serve as the foundation for all dbt transformations.
 
- ![BigQuery Raw Dataset](docs/bigquery_staging_dataset.png)  
+**Screenshot:** BigQuery Raw Dataset
 
 ---
 
-#### 3. github_data_github_source (Analytics Layer)
+### 2. dbt Staging Layer
 
-This dataset contains analytics-ready tables designed for reporting and dashboarding.
+The staging layer standardizes and cleans the raw GitHub data.
 
-Examples of tables include:
+Main staging models:
 
-* github_daily_metrics
-* github_weekly_metrics
-* github_monthly_metrics
-* github_quarterly_metrics
-* github_issues
-* github_pull_requests
+- stg_github_commit
+- stg_github_repositories
+- stg_github_user
 
-These tables provide summarized metrics that help track repository activity, contributor engagement, issue management, and engineering productivity.
-This layered architecture follows analytics engineering best practices by separating raw, staging, and analytics datasets, making the pipeline easier to maintain, test, and scale.
+This layer applies column renaming, data cleaning, and consistent naming conventions before data moves to downstream models.
 
- ![BigQuery Raw Dataset](docs/bigquery_analytics_dataset.png)  
+**Screenshot:** dbt Staging Models
 
-### Data Flow
+---
 
-GitHub API → Fivetran → BigQuery (Raw Layer) → BigQuery (Staging Layer) → BigQuery (Analytics Layer) → dbt → Looker Studio
+### 3. dbt Analytics Layer (Marts)
+
+The marts layer contains analytics-ready fact and dimension models designed for business reporting and visualization.
+
+Dimension Models
+
+- dim_github_repositories
+- dim_github_user
+
+Fact Models
+
+- fct_github_commit_activity
+- fct_daily_repo_stats
+- fct_github_commit_activity_7d
+- fct_repo_activity_daily
+
+These models power the Looker Studio dashboard and provide insights into:
+
+- Repository activity
+- Daily commit trends
+- Active contributors
+- Repository performance
+- 7-day moving averages
+
+This layered architecture separates raw, staging, and analytics models, making the project easier to maintain, test, document, and scale using dbt best practices.
+
+**Screenshot:** BigQuery Analytics Models
+
+
 
 ### Step 4: dbt Data Transformation
 
