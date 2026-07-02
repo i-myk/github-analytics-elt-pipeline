@@ -200,7 +200,7 @@ This layered architecture separates raw, staging, and analytics models, making t
 
 **Screenshot:** BigQuery Analytics Models
 
-![BigQuery Analytics Models](images/dbt_models.png)
+![BigQuery Analytics Models](docs/dbt_models.png)
 
 
 
