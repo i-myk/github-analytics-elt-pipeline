@@ -429,11 +429,11 @@ Shows monthly commit trends to identify seasonality and development patterns.
 
 ## Dashboard Preview
 
-![Looker Studio Dashboard](docs/looker_dashboard.png)
+![Looker Studio Dashboard](docs/github_dashboard.png)
 
-### Live Dashboard
+## 🚀 Live Dashboard
 
-👉 [Open Looker Studio Dashboard]([(https://datastudio.google.com/reporting/7478f0af-71f2-464e-accb-4e4e010b19a9)]
+🔗 **[View Interactive Looker Studio Dashboard](https://datastudio.google.com/reporting/7478f0af-71f2-464e-accb-4e4e010b19a9)**
 
 
 
