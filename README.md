@@ -2,16 +2,6 @@
 
 End-to-end analytics engineering project built using GitHub data, Fivetran, BigQuery, dbt, and Looker Studio.
 
-
-## dbt Project
-
-The dbt transformation layer used in this ELT pipeline is maintained in a separate repository:
-
-➡️ https://github.com/i-myk/github-analytics-dbt
-
-This repository focuses on the complete end-to-end ELT workflow, while the separate dbt repository contains the transformation models, tests, and documentation.
-
-
 ---
 
 # Project Overview
@@ -37,6 +27,17 @@ The project follows a modern ELT architecture:
 3. BigQuery stores the raw source data and acts as the central data warehouse.
 4. dbt transforms raw data into clean, analytics-ready models using a layered architecture.
 5. Looker Studio connects to the transformed models and provides business reporting dashboards.
+
+
+## dbt Project
+
+The dbt models used in this ELT pipeline are maintained in a separate repository:
+
+➡️ https://github.com/i-myk/github-analytics-dbt
+
+The repository includes data transformations, data quality tests, and dbt documentation used by this project.
+
+
 
 ---
 ## Step 1: GitHub API/Data Source
