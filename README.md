@@ -30,7 +30,7 @@ The project follows a modern ELT architecture:
 5. Looker Studio connects to the transformed models and provides business reporting dashboards.
 
 
----
+
 ## dbt Project
 
 The dbt models used in this ELT pipeline are maintained in a separate repository:
