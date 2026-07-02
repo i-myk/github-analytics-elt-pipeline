@@ -152,7 +152,7 @@ Example source tables include:
 
 These tables preserve the original GitHub schema and serve as the foundation for all dbt transformations.
 
-**Screenshot:** BigQuery Raw Dataset
+
 
 ---
 
@@ -168,7 +168,7 @@ Main staging models:
 
 This layer applies column renaming, data cleaning, and consistent naming conventions before data moves to downstream models.
 
-**Screenshot:** dbt Staging Models
+
 
 ---
 
@@ -199,6 +199,8 @@ These models power the Looker Studio dashboard and provide insights into:
 This layered architecture separates raw, staging, and analytics models, making the project easier to maintain, test, document, and scale using dbt best practices.
 
 **Screenshot:** BigQuery Analytics Models
+
+![BigQuery Analytics Models](images/dbt_models.png)
 
 
 
