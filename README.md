@@ -327,387 +327,128 @@ The dbt lineage graph illustrates how raw GitHub data flows through the staging,
 
 ## Data Quality
 
-The project uses dbt tests to ensure data quality.
+The project uses dbt tests to ensure data quality and maintain reliable analytical datasets.
 
-Implemented tests include:
+Implemented tests:
 
 - `unique`
 - `not_null`
 
-These tests validate key business identifiers and help maintain reliable analytical datasets.
+These tests validate primary business identifiers and help detect data quality issues during model execution.
+
+Example:
+
+```yaml
+models:
+  - name: dim_github__user
+    description: "Dimension table for GitHub users"
+    columns:
+      - name: user_id
+        description: "Primary key of the GitHub user"
+        tests:
+          - unique
+          - not_null
+```
 
 ---
 
 ## Documentation
 
-The project includes YAML documentation for models, sources, and columns, making the transformation pipeline easier to understand and maintain.
+The project includes YAML documentation for models, sources, and columns, making the transformation pipeline easier to understand, maintain, and extend.
+
+---
+
+## Why dbt?
+
+dbt was selected because it enables:
+
+- Modular SQL transformations
+- Version-controlled analytics workflows
+- Reusable data models
+- Automated data quality testing
+- Model documentation
+- Clear data lineage
+
+Using dbt transforms raw GitHub data into reliable, analytics-ready datasets that power the Looker Studio dashboard.
 
 
+# Step 5: Looker Studio Dashboard
 
+The final step of the pipeline is data visualization using Looker Studio.
 
-### Data Quality Tests
+The dashboard connects directly to the analytics-ready dbt models stored in BigQuery and provides interactive insights into repository activity, contributor engagement, and development trends.
 
-dbt tests are used to validate important fields and improve data reliability.
+---
 
-Implemented tests include:
+## Dashboard Features
 
-- `unique`
-- `not_null`
-
-Example:
-
-```_marts.yml
- name: dim_github__user
-    description: "Dimension table for GitHub users"
-    columns:
-      - name: user_id
-        description: "Primary key of user"
-        tests:
-          - unique
-          - not_null
-
-
-```
-
-### Why dbt?
-
-dbt was used because it supports:
-
-- modular SQL transformations
-- version-controlled analytics logic
-- reusable models
-- data quality testing
-- clear lineage and documentation
-- maintainable analytics engineering workflows
-
-This dbt layer transforms raw GitHub activity data into reliable datasets that can be used for KPI reporting and dashboard development in Looker Studio.
-
-### Step 5: Looker Studio Dashboard
-
-The final step of the pipeline is data visualization using Looker Studio. The dashboard connects directly to the analytics-ready tables created by dbt and provides insights into repository performance, contributor activity, and commit trends.
-
-## Dashboard Overview
-
-The dashboard allows users to explore GitHub activity through interactive filters, KPI cards, trend analysis, and repository performance metrics.
-
-### Dashboard Features
-
-- Repository filtering
-- Author filtering
-- Date range selection
+- Repository filter
+- Author filter
+- Date range filter
+- KPI scorecards
 - Commit trend analysis
-- Repository performance tracking
-- Contributor activity monitoring
+- Repository performance
+- Contributor activity
 - Monthly commit analysis
 
-### Key Performance Indicators (KPIs)
+---
 
-The dashboard displays:
+## Key Performance Indicators (KPIs)
+
+The dashboard tracks:
 
 - Total Commits
 - Total Repositories
-- Active Authors
+- Active Contributors
 
-### Analytics Views
+---
 
-#### Commit Activity Trend
+## Dashboard Visualizations
 
-Tracks commit volume over time and includes a 7-day moving average to identify activity patterns.
+### Commit Activity Trend
 
-#### Top Repositories
+Displays commit activity over time with a 7-day moving average to highlight long-term trends.
 
-Ranks repositories based on commit activity.
+### Top Repositories
 
-#### Top Authors
+Ranks repositories by commit activity.
 
-Identifies the most active contributors across repositories.
+### Top Contributors
 
-#### Commits by Author
+Highlights the most active GitHub contributors.
 
-Compares contribution levels between GitHub users.
+### Commits by Contributor
 
-#### Monthly Commit Distribution
+Compares commit activity across contributors.
 
-Analyzes commit activity by month to identify seasonality and development trends.
+### Monthly Commit Distribution
 
-## Dashboard Screenshot
+Shows monthly commit trends to identify seasonality and development patterns.
 
-![GitHub Analytics Dashboard](docs/github_dashboard.png)
+---
 
-## Dashboard Data Sources
+## Dashboard Preview
 
-The dashboard is powered by dbt-generated analytics models:
+![Looker Studio Dashboard](docs/looker_dashboard.png)
 
-- fct_github_commit_activity
-- fct_github_commit_activity_7d
-- fct_daily_repo_stats
-- dim_github_repositories
-- dim_github_user
+### Live Dashboard
 
-## Business Value
+👉 [Open Looker Studio Dashboard]([(https://datastudio.google.com/reporting/7478f0af-71f2-464e-accb-4e4e010b19a9)]
 
-This dashboard enables:
 
-- Repository performance monitoring
-- Contributor engagement analysis
-- Engineering productivity tracking
-- Activity trend identification
-- Self-service reporting for development teams
 
-# Looker Studio Dashboard
+## Key Insights
+
+The dashboard helps engineering teams:
+
+- Monitor repository health and development activity.
+- Identify the most active repositories and contributors.
+- Track development trends over time.
+- Detect periods of increased or reduced engineering activity.
+- Provide a single source of truth for repository analytics using dbt models.
 
 ## Overview
 
 The final step of the project was building an interactive dashboard in Looker Studio to visualize GitHub repository performance, contributor activity, and development trends.
 
 The dashboard connects directly to BigQuery tables generated by dbt models and provides business-ready insights through interactive filters, KPI cards, and visualizations.
-
----
-
-## Dashboard Architecture
-
-```text
-GitHub API
-    ↓
-Fivetran
-    ↓
-BigQuery
-    ↓
-dbt Models
-    ↓
-Looker Studio Dashboard
-```
-
----
-
-## Dashboard Features
-
-### Filters
-
-Users can dynamically filter dashboard results by:
-
-- Date Range
-- Repository Name
-- Author Name
-
----
-
-## KPI Metrics
-
-### Total Commits
-Displays the total number of commits across all repositories.
-
-### Repositories
-Displays the number of repositories included in the analysis.
-
-### Active Contributors
-Shows the number of unique contributors who made commits.
-
-### Peak Daily Commits
-Displays the highest number of commits recorded on a single day.
-
----
-
-## Visualizations
-
-### Monthly Commit Trend
-
-Tracks commit activity over time and helps identify spikes and trends in development activity.
-
-**Data Source:** `fct_github_commit_activity_7d`
-
-**Metrics:**
-- commit_cnt_7d_avg
-
-**Dimension:**
-- commit_date
-
----
-
-### Commits by Weekday
-
-Shows which days of the week have the highest development activity.
-
-**Data Source:** `fct_github_commit_activity`
-
-**Metric:**
-- commit_cnt
-
-**Dimension:**
-- weekday_name
-
----
-
-### Top Contributors
-
-Ranks contributors by total commit volume.
-
-**Data Source:** `fct_github_commit_activity`
-
-**Metric:**
-- commit_cnt
-
-**Dimension:**
-- author_name
-
----
-
-### Top Repositories
-
-Displays repositories with the highest activity levels.
-
-**Data Source:** `fct_daily_repo_stats`
-
-**Metric:**
-- repo_count
-
-**Dimension:**
-- repository_name
-
----
-
-### Monthly Commit Volume
-
-Displays total commits aggregated by month.
-
-**Data Source:** `fct_github_commit_activity`
-
-**Metric:**
-- commit_cnt
-
-**Dimension:**
-- commit_month
-
----
-
-## Business Questions Answered
-
-The dashboard helps answer the following questions:
-
-- Which repositories are the most active?
-- Who are the top contributors?
-- How does commit activity change over time?
-- Which months have the highest development activity?
-- What day of the week has the highest development activity?
-- What is the maximum number of commits made in a single day?
-
----
-
-## Technologies Used
-
-- GitHub API
-- Fivetran
-- BigQuery
-- dbt
-- Looker Studio
-
----
-
-## Dashboard Screenshot
-
-![GitHub Analytics Dashboard](dashboards/github_looker_dashboard.png)
-
----
-
-## Dashboard Development Process
-
-### Step 1: Connect Analytics Models
-
-Connected Looker Studio directly to BigQuery tables generated by dbt.
-
-Data sources used:
-
-- fct_github_commit_activity
-- fct_github_commit_activity_7d
-- fct_daily_repo_stats
-- dim_github_repositories
-- dim_github_user
-
-These models provide clean, analytics-ready data for reporting.
-
----
-
-### Step 2: Build KPI Scorecards
-
-Created KPI cards to provide a high-level overview of repository activity.
-
-Implemented metrics:
-
-- Total Commits
-- Total Repositories
-- Active Contributors
-- Peak Daily Commits
-
-These KPIs allow users to quickly assess repository performance.
-
----
-
-### Step 3: Add Interactive Filters
-
-Added report-level controls to improve dashboard usability.
-
-Filters include:
-
-- Date Range
-- Repository Name
-- Author Name
-
-These controls enable users to explore repository activity dynamically.
-
----
-
-### Step 4: Create Analytical Visualizations
-
-Developed visualizations to answer key business questions.
-
-Implemented charts:
-
-| Visualization | Purpose |
-|--------------|---------|
-| Commit Activity Trend | Analyze commit activity over time |
-| Commits by Weekday | Identify peak development days |
-| Top Contributors | Rank contributors by commit volume |
-| Top Repositories | Identify the most active repositories |
-| Monthly Commit Volume | Analyze monthly development trends |
-
----
-
-### Step 5: Dashboard Design and Optimization
-
-Applied dashboard design best practices to improve readability and user experience.
-
-Enhancements include:
-
-- Color-coded KPI cards
-- Consistent chart sizing and alignment
-- Interactive filtering
-- Clear chart titles and labels
-- Responsive layout
-- Business-focused metrics
-
----
-
-### Step 6: Data Validation
-
-Validated dashboard results against BigQuery tables and dbt models to ensure metric accuracy and consistency.
-
-Validation checks included:
-
-- Commit totals
-- Repository counts
-- Contributor counts
-- Aggregated metrics
-
----
-
-### Result
-
-Delivered an interactive GitHub Repository Analytics Dashboard that provides repository monitoring, contributor analysis, and development trend reporting through a centralized analytics platform built on BigQuery, dbt, and Looker Studio.
-
----
-
-## Outcome
-
-Built an end-to-end analytics solution that extracts GitHub data using Fivetran, transforms it using dbt in BigQuery, and visualizes repository and contributor performance in Looker Studio. The dashboard provides actionable insights into repository activity, contributor engagement, and development trends through interactive reporting.
-
----
