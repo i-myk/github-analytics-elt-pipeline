@@ -18,6 +18,7 @@ The project analyzes GitHub repository, commit, and user activity data to create
 
 ![GitHub Analytics Architecture](docs/architecture_diagram.png)
 
+
 ## Data Pipeline Architecture
 
 The project follows a modern ELT architecture:
@@ -29,6 +30,7 @@ The project follows a modern ELT architecture:
 5. Looker Studio connects to the transformed models and provides business reporting dashboards.
 
 
+---
 ## dbt Project
 
 The dbt models used in this ELT pipeline are maintained in a separate repository:
