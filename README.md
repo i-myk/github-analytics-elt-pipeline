@@ -204,137 +204,146 @@ This layered architecture separates raw, staging, and analytics models, making t
 
 
 
-### Step 4: dbt Data Transformation
+# Step 4: dbt Data Transformation
 
-dbt is used to transform raw GitHub data into clean, tested, and analytics-ready models for reporting.
+dbt is used to transform raw GitHub data into clean, documented, and analytics-ready models for reporting and dashboarding.
 
-The transformation layer follows a structured modeling approach:
+The project follows a layered dbt architecture:
 
-GitHub Raw Tables → Staging Models → Dimension Models → Fact Models → Analytics Dataset
+GitHub Raw Tables → Staging Models → Intermediate Models → Mart Models → Looker Studio Dashboard
 
-### Transformation Flow
+---
 
-![dbt Transformation Flow](docs/dbt_transformation.png)
-
-### dbt Project Structure
+## dbt Project Structure
 
 ```text
 models/
 └── github_analytics_dbt/
     ├── staging/
-    │   ├── stg_github__commit.sql
-    │   ├── stg_github__repositories.sql
-    │   └── stg_github__user.sql
+    │   └── github/
+    │       ├── _github__sources.yml
+    │       ├── _github__models.yml
+    │       ├── stg_github__commit.sql
+    │       ├── stg_github__repositories.sql
+    │       └── stg_github__user.sql
+    │
+    ├── intermediate/
+    │   └── github/
+    │       ├── _intermediate__models.yml
+    │       └── int_github_repository_stats.sql
     │
     └── marts/
-        ├── dim_github__repositories.sql
-        ├── dim_github__user.sql
-        ├── fct_github_commit_activity.sql
-        ├── fct_github_commit_activity_7d.sql
-        ├── fct_repo_activity_daily.sql
-        └── fct_daily_repo_stats.sql
+        └── analytics/
+            ├── _analytics__models.yml
+            ├── dim_github__repositories.sql
+            ├── dim_github__user.sql
+            ├── fct_github_commit_activity.sql
+            ├── fct_github_commit_activity_7d.sql
+            ├── fct_repo_activity_daily.sql
+            └── fct_daily_repo_stats.sql
 ```
 
-### Source Layer
+---
 
-The source layer references raw GitHub tables loaded into BigQuery by Fivetran.
+## Source Layer
 
-Main source tables:
+The source layer references raw GitHub data loaded into BigQuery by Fivetran.
 
-- commit
+Main source tables include:
+
 - repository
+- commit
 - user
-- issue
-- pull_request
 
-### Staging Layer
+These source definitions provide a consistent entry point for downstream transformations.
 
-Staging models clean and standardize raw GitHub data before it is used in reporting models.
+---
 
-Examples:
+## Staging Layer
 
-- `stg_github__commit`
-- `stg_github__repositories`
-- `stg_github__user`
+The staging layer cleans and standardizes raw GitHub data.
+
+Main staging models:
+
+- stg_github__commit
+- stg_github__repositories
+- stg_github__user
 
 Key transformations include:
 
 - Renaming columns
-- Standardizing field names
-- Converting data types
-- Filtering unnecessary fields
-- Preparing clean datasets for downstream models
+- Standardizing naming conventions
+- Cleaning data
+- Selecting relevant fields
+- Preparing datasets for downstream models
+
+---
+
+## Intermediate Layer
+
+The intermediate layer applies reusable business logic before creating reporting models.
+
+Main model:
+
+- int_github_repository_stats
+
+This layer simplifies complex transformations and prepares reusable datasets for the marts layer.
+
+---
+
+## Mart Layer
+
+The marts layer contains analytics-ready fact and dimension models optimized for reporting.
 
 ### Dimension Models
 
-Dimension models provide descriptive attributes for analysis.
-
-Examples:
-
-- `dim_github__repositories` — repository attributes and metadata
-- `dim_github__user` — GitHub user and contributor attributes
+- dim_github__repositories
+- dim_github__user
 
 ### Fact Models
 
-Fact models contain measurable events and metrics used for analysis and dashboards.
+- fct_github_commit_activity
+- fct_github_commit_activity_7d
+- fct_repo_activity_daily
+- fct_daily_repo_stats
 
-Examples:
+These models power the Looker Studio dashboard and provide insights into:
 
-- `fct_github_commit_activity` — commit activity metrics
-- `fct_github_commit_activity_7d` — 7-day commit activity trends
-- `fct_repo_activity_daily` — daily repository activity
-- `fct_daily_repo_stats` — daily repository statistics
+- Repository activity
+- Daily commit trends
+- Active contributors
+- Repository performance
+- 7-day moving averages
 
-### dbt Lineage
+---
 
-The dbt lineage graph shows how raw GitHub source tables flow into staging models and then into analytics-ready fact and dimension tables.
+## dbt Lineage
 
-![dbt Lineage](docs/dbt_lineage.png)
+The dbt lineage graph illustrates how raw GitHub data flows through the staging, intermediate, and mart layers to create analytics-ready models.
 
-### Key dbt Code Examples
+![dbt Lineage](docs/dbt_dag.png)
 
-#### 1. Source Definition
-This shows how dbt connects to your GitHub raw tables.
-```File: _src_github_staging.yml
+---
 
-version: 2
+## Data Quality
 
-sources:
-  - name: github_data
-    database: fifth-flash-489402-h9
-    schema: github_data
-    tables:
-      - name: repository
-      - name: commit
-      - name: user
-      - name: issue
-      - name: pull_request
+The project uses dbt tests to ensure data quality.
 
-models:
-  - name: stg_github__repositories
-    description: "Cleaned repository data from GitHub"
-    columns:
-      - name: repository_id
-        tests:
-          - unique
-          - not_null
+Implemented tests include:
 
-  - name: stg_github__user
-    description: "Cleaned GitHub user data"
-    columns:
-      - name: user_id
-        tests:
-          - unique
-          - not_null
+- `unique`
+- `not_null`
 
-  - name: stg_github__commit
-    description: "Cleaned GitHub commit data"
-    columns:
-      - name: commit_sha
-        tests:
-          - unique
-          - not_null
-```          
+These tests validate key business identifiers and help maintain reliable analytical datasets.
+
+---
+
+## Documentation
+
+The project includes YAML documentation for models, sources, and columns, making the transformation pipeline easier to understand and maintain.
+
+
+
 
 ### Data Quality Tests
 
